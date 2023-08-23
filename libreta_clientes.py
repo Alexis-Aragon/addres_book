@@ -5,7 +5,7 @@ import os
 from customtkinter import *
 
 import appdirs
-
+import platform
 
 set_appearance_mode("light")
 root = CTk()
@@ -13,19 +13,18 @@ root.title('Libreta de Clientes')
 
 # Identificación de aplicación en windows
 myappid = "CRM-app-libreta-v1.0"
-try:
-    from ctypes import windll  # Only exists on Windows.
-    windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
-except ImportError:
-    pass
 
 # # directorio_actual = os.path.dirname(__file__)
 directorio_base = os.path.dirname(__file__)
 
-# icono de la app
-# root.iconbitmap(os.path.join(directorio_base, 'libreta.ico')) # icono en windows
-# icono en linux
-root.iconphoto(True, PhotoImage(file=os.path.join(directorio_base, "libreta.png")))
+# Agregar icono de la app
+# Verificar el sistema operativo
+if platform.system() == "Windows":
+    from ctypes import windll  # Only exists on Windows.
+    windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+    root.iconbitmap(os.path.join(directorio_base, 'libreta.ico'))
+elif platform.system() == "Linux":
+    root.iconphoto(True, PhotoImage(file=os.path.join(directorio_base, "libreta.png")))
 
 # # conexión base de datos
 # nombre_db = 'crm.db'
